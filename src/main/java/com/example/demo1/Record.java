@@ -1,3 +1,11 @@
+/*
+Kevin Wang
+3 May 2023
+AP Computer Science A
+2nd Period
+Master Project
+Database Class
+ */
 package com.example.demo1;
 
 
@@ -13,28 +21,37 @@ import java.util.Properties;
 
 public class Record {
 
+    //Fields of the class
     private Connection connection;
     private ArrayList<Table> results;
     private ResultSet rs;
 
     //Getters and Setters
+
+    //Getter for results array list
     public ArrayList<Table> getResults() {
         return results;
     }
+
+    //Setter for results array list
     public void setResults(ArrayList<Table> results) {
         this.results = results;
     }
+
+    //Getter for result set
     public ResultSet getRs() {
         return rs;
     }
+
+    //Setter for result set
     public void setRs(ResultSet rs) {
         this.rs = rs;
     }
 
+    //Constructors
     public Record() {
         super();
         this.setResults(new ArrayList<Table>());
-
     }
 
 
@@ -97,10 +114,12 @@ public class Record {
     //Adding a record to questionTable
     public String addRecord(Table q) {
 
+        //Query to insert into table
         String query = "INSERT INTO questionTable(question,answer1,answer2,answer3,category,difficulty,power) " + "VALUES(?,?,?,?,?,?,?)";
 
 		try {
 
+            //Getting values to insert
             PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             preparedStatement.setString(1, q.getQuestion());
@@ -112,22 +131,28 @@ public class Record {
             preparedStatement.setInt(7, q.getPower());
             preparedStatement.executeUpdate();
 
+        //Returning error if there is one
         } catch (Exception e) {
             e.printStackTrace();
             return e.toString();
         }
+
         loadResults();
 		return "Record Added.";
     }
 
     public String loadResults() {
 
-        //Here is another way to execute a 'statement on a database'
+        //Try-catch to catch for errors
         try {
             getResults().clear();
             Statement stmt = connection.createStatement();
+
+            //Query to select all from table
             setRs(stmt.executeQuery("SELECT * from questionTable ORDER BY id asc;"));
             while(getRs().next()) {
+
+                //Getting records from result set and adding into array list
                 getResults().add(new Table(rs.getInt(1),
                         rs.getString(2),
                         rs.getString(3),
@@ -139,12 +164,14 @@ public class Record {
             }
             return "Records Loaded.";
 
+        //Printing errors back to user if there are any
         } catch (SQLException e) {
             e.printStackTrace();
             return e.toString();
         }
     }
 
+    //Editing/updating a record in questionTable
     public String editRecord(Table q) {
 
         String query = "UPDATE questionTable SET "
@@ -178,14 +205,19 @@ public class Record {
         return "Record Updated";
     }
 
+    //Deleting a record from question table
     public String deleteRecord(Table q) {
         try {
 
+            //Query to delete record
             String query = "DELETE FROM questionTable WHERE id=?;";
+
+            //Getting id of record to delete
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,  q.getId());
             preparedStatement.executeUpdate();
 
+        //Returning error if there is one
         }catch(Exception e) {
             e.printStackTrace();
             return e.toString();
@@ -194,14 +226,19 @@ public class Record {
         return "Record Deleted.";
     }
 
-    public String selectRecord(Table q) {
+    //Selecting records from question table with a certain category
+    public String categoryRecord(Table q) {
         try {
 
-            String query = "SELECT FROM questionTable WHERE id=?;";
+            //Query to select a specific record
+            String query = "SELECT FROM questionTable WHERE category=?;";
+
+            //Getting category of records to be selected
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1,  q.getId());
+            preparedStatement.setString(1,  q.getCategory());
             preparedStatement.executeUpdate();
 
+        //Returning error if there is one
         }catch(Exception e) {
             e.printStackTrace();
             return e.toString();

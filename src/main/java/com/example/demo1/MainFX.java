@@ -13,8 +13,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class MainFX extends Application {
@@ -66,6 +71,7 @@ public class MainFX extends Application {
         }
     }
 
+    //Launching the controller
     public static void main(String[] args) {
         launch();
     }

@@ -122,6 +122,7 @@ public class RecordController {
 
                 connectBtn.setText("Disconnect");
                 enableControls();
+                modeBtn.setDisable(false);
 
             //If unsuccessful, display failure message to user
             } else {
@@ -341,6 +342,7 @@ public class RecordController {
         backBtn.setDisable(true);
         back3Btn.setDisable(true);
         lastBtn.setDisable(true);
+        modeBtn.setDisable(true);
     }
 
     //Method to enable all buttons on the GUI
@@ -386,6 +388,8 @@ public class RecordController {
         buzzBtn.setDisable(true);
         userAnswerTxt.setDisable(true);
         skipBtn.setDisable(true);
+        modeBtn.setDisable(true);
+        updateMessage("Welcome to QB Tracker!");
         mode = "e";
     }
 
@@ -502,7 +506,7 @@ public class RecordController {
 
     //Function for when user buzzes in with an answer
     @FXML
-    private void buzzBtnClicked(ActionEvent event) throws InterruptedException {
+    private void btnBuzzClicked(ActionEvent event) throws InterruptedException {
 
         //Getting user-inputted answer and answers from database
         String userAnswer = userAnswerTxt.getText();
@@ -567,7 +571,7 @@ public class RecordController {
 
     //Function to skip a question
     @FXML
-    private void skipBtnClicked(ActionEvent event) {
+    private void btnSkipClicked(ActionEvent event) {
         end();
     }
 

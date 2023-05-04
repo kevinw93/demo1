@@ -1,4 +1,4 @@
 .chart-plot-background {
-    -fx-background-image: url("red.jpg");
+    -fx-background-image: url("gradient.png");
     -fx-background-size:cover;
 }
