@@ -1,4 +1,4 @@
-package master;
+package com.example.demo1;
 
 public class Table {
 
@@ -11,7 +11,6 @@ public class Table {
     private String category;
     private int difficulty;
     private int power;
-    private int speed;
 
     public Table() {
         this.id = 1;
@@ -22,9 +21,8 @@ public class Table {
         this.category = "";
         this.difficulty = 1;
         this.power = 1;
-        this.speed = 1;
     }
-    public Table(int id, String question, String answer1, String answer2, String answer3, String category, int difficulty, int power, int speed) {
+    public Table(int id, String question, String answer1, String answer2, String answer3, String category, int difficulty, int power) {
         this.id = id;
         this.question = question;
         this.answer1 = answer1;
@@ -33,7 +31,6 @@ public class Table {
         this.category = category;
         this.difficulty = difficulty;
         this.power = power;
-        this.speed = speed;
     }
 
     public int getId() {
@@ -100,11 +97,4 @@ public class Table {
         this.power = power;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
 }

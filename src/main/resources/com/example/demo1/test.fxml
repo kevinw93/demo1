@@ -32,6 +32,7 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -40,9 +41,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.RecordController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -83,21 +83,37 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" styleClass="chart-plot-background" stylesheets="@style.css" VBox.vgrow="ALWAYS">
       <children>
-        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
-            <TextField fx:id="questionText" layoutX="37.0" layoutY="57.0" prefHeight="68.0" prefWidth="562.0" text="Question" />
-            <Label fx:id="questionLabel" layoutX="37.0" layoutY="30.0" text="Question" />
-            <Label fx:id="answer1Label" layoutX="37.0" layoutY="139.0" text="Answer 1" />
-            <TextField fx:id="answer1Text" layoutX="37.0" layoutY="165.0" text="Answer 1" />
-            <TextField fx:id="answer2Text" layoutX="37.0" layoutY="242.0" text="Answer 2" />
-            <TextField fx:id="answer3Text" layoutX="37.0" layoutY="323.0" text="Answer 3" />
-            <Label fx:id="answer2Label" layoutX="37.0" layoutY="216.0" text="Answer 2" />
-            <Label fx:id="answer3Label" layoutX="37.0" layoutY="294.0" text="Answer 3" />
+            <TextField fx:id="questionTxt" layoutX="30.0" layoutY="123.0" prefHeight="129.0" prefWidth="562.0" text="Question" />
+            <Label fx:id="questionLbl" layoutX="30.0" layoutY="95.0" text="Question ID" />
+            <Label fx:id="answer1Lbl" layoutX="243.0" layoutY="22.0" text="Answer 1" />
+            <Button fx:id="backBtn" layoutX="284.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnBackClicked" text="&lt;" />
+            <TextField fx:id="answer1Txt" layoutX="301.0" layoutY="18.0" prefHeight="25.0" prefWidth="298.0" text="Answer 1" />
+            <Button fx:id="connectBtn" layoutX="37.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnConnectClicked" prefHeight="25.0" prefWidth="115.0" text="Connect" />
+            <Button fx:id="insertBtn" layoutX="223.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnInsertClicked" prefHeight="25.0" prefWidth="73.0" text="Insert" />
+            <Button fx:id="deleteBtn" layoutX="380.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnDeleteClicked" prefHeight="25.0" prefWidth="73.0" text="Delete" />
+            <Button fx:id="updateBtn" layoutX="526.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnUpdateClicked" prefHeight="25.0" prefWidth="73.0" text="Update" />
+            <Button fx:id="forBtn" layoutX="320.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnForClicked" text="&gt;" />
+            <Button fx:id="for3Btn" layoutX="354.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnFor3Clicked" text="&gt;&gt;" />
+            <Button fx:id="back3Btn" layoutX="243.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnBack3Clicked" text="&lt;&lt;" />
+            <Button fx:id="firstBtn" layoutX="193.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnFirstClicked" text="&lt;&lt;&lt;" />
+            <Button fx:id="lastBtn" layoutX="396.0" layoutY="341.0" mnemonicParsing="false" onAction="#btnLastClicked" text="&gt;&gt;&gt;" />
+            <Label fx:id="answer2Lbl" layoutX="243.0" layoutY="58.0" text="Answer 2" />
+            <Label fx:id="answer3Lbl" layoutX="243.0" layoutY="95.0" text="Answer 3" />
+            <TextField fx:id="answer2Txt" layoutX="301.0" layoutY="54.0" prefHeight="25.0" prefWidth="298.0" text="Answer 2" />
+            <TextField fx:id="answer3Txt" layoutX="301.0" layoutY="91.0" prefHeight="25.0" prefWidth="298.0" text="Answer 3" />
+            <Label fx:id="difficultyLbl" layoutX="135.0" layoutY="58.0" text="Difficulty" />
+            <Label fx:id="powerLbl" layoutX="152.0" layoutY="95.0" text="Power" />
+            <TextField fx:id="difficultyTxt" layoutX="193.0" layoutY="54.0" prefHeight="25.0" prefWidth="33.0" />
+            <TextField fx:id="powerTxt" layoutX="193.0" layoutY="91.0" prefHeight="25.0" prefWidth="33.0" />
+            <Button fx:id="cancelBtn" layoutX="214.0" layoutY="302.0" mnemonicParsing="false" onAction="#btnCancelAddClicked" prefHeight="25.0" prefWidth="91.0" text="Cancel Add" />
+            <Label fx:id="categoryLbl" layoutX="30.0" layoutY="22.0" text="Category" />
+            <TextField fx:id="idTxt" layoutX="102.0" layoutY="91.0" prefHeight="25.0" prefWidth="33.0" />
+            <TextField fx:id="categoryTxt" layoutX="84.0" layoutY="18.0" prefHeight="25.0" prefWidth="143.0" />
+            <Label fx:id="messageLbl" layoutX="30.0" layoutY="306.0" text="Label" />
+            <Button fx:id="modeBtn" layoutX="36.0" layoutY="336.0" mnemonicParsing="false" onAction="#btnModeClicked" text="Mode: Edit " />
+            <Button fx:id="startBtn" layoutX="69.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnStartClicked" text="Start" />
       </children>
     </AnchorPane>
   </children>

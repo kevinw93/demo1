@@ -1,8 +1,13 @@
-package master;
+package com.example.demo1;
 
-import java.io.File;
+
 import java.io.FileInputStream;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -34,25 +39,27 @@ public class Record {
 
     //Connection
 
-    public boolean SQLConnect() {
+    public boolean findConnection() {
         try {
-            String loadPath = "quiz.db";
-            FileInputStream inFile = new FileInputStream(loadPath);
-            Properties props = new Properties();
-            props.load(inFile);
 
-            connection = DriverManager.getConnection(props.getProperty("dbUrl"), props.getProperty("dbUser"), props.getProperty("dbPassword"));
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz", "root", "R3by$ound");
 
-            connection.prepareStatement("CREATE TABLE IF NOT EXISTS quiz(" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT" +
-                    "question VARCHAR(255) NOT NULL," +
-                    "answer1 VARCHAR(255) NOT NULL," +
-                    "answer2 VARCHAR(255)," +
-                    "answer3 VARCHAR(255)," +
-                    "category VARCHAR(255)," +
-                    "difficulty INT," +
-                    "power INT," +
-                    "speed INT NOT NULL,").executeUpdate();
+            try {
+                connection.prepareStatement("CREATE TABLE IF NOT EXISTS `questionTable`(\n" +
+                        "    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
+                        "    `question` TEXT NOT NULL,\n" +
+                        "    `answer1` VARCHAR(255) NOT NULL,\n" +
+                        "    `answer2` VARCHAR(255),\n" +
+                        "    `answer3` VARCHAR(255),\n" +
+                        "    `category` VARCHAR(255) NOT NULL,\n" +
+                        "    `difficulty` INT NOT NULL,\n" +
+                        "    `power` INT\n" +
+                        ");").executeUpdate();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
 
         } catch (Exception e) {
             System.out.println(e);
@@ -61,7 +68,7 @@ public class Record {
         return true;
     }
 
-    public boolean SQLDisconnect() {
+    public boolean disconnect() {
         try {
             connection.close();
         }catch(Exception e){
@@ -71,9 +78,10 @@ public class Record {
         return true;
     }
 
+
     public String addRecord(Table q) {
 
-        String query = "INSERT INTO quiz(question,answer1,answer2,answer3,category,difficulty,power,speed) " + "VALUES(?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO questionTable(question,answer1,answer2,answer3,category,difficulty,power) " + "VALUES(?,?,?,?,?,?,?)";
 
 		try {
 
@@ -86,7 +94,6 @@ public class Record {
             preparedStatement.setString(5, q.getCategory());
             preparedStatement.setInt(6, q.getDifficulty());
             preparedStatement.setInt(7, q.getPower());
-            preparedStatement.setInt(8, q.getSpeed());
             preparedStatement.executeUpdate();
 
         } catch (Exception e) {
@@ -103,7 +110,7 @@ public class Record {
         try {
             getResults().clear();
             Statement stmt = connection.createStatement();
-            setRs(stmt.executeQuery("SELECT * from quiz ORDER BY id asc;"));
+            setRs(stmt.executeQuery("SELECT * from questionTable ORDER BY id asc;"));
             while(getRs().next()) {
                 getResults().add(new Table(rs.getInt(1),
                         rs.getString(2),
@@ -112,8 +119,7 @@ public class Record {
                         rs.getString(5),
                         rs.getString(6),
                         rs.getInt(7),
-                        rs.getInt(8),
-                        rs.getInt(9)));
+                        rs.getInt(8)));
             }
             return "Records Loaded.";
 
@@ -125,15 +131,14 @@ public class Record {
 
     public String editRecord(Table q) {
 
-        String query = "UPDATE quiz SET "
+        String query = "UPDATE questionTable SET "
                 + "question=?, "
                 + "answer1=?, "
                 + "answer2=?, "
-                + "answer3=? "
-                + "category=? "
-                + "difficulty=? "
+                + "answer3=?, "
+                + "category=?, "
+                + "difficulty=?, "
                 + "power=? "
-                + "speed=? "
                 + "WHERE id=?;";
 
         try {
@@ -146,7 +151,7 @@ public class Record {
             preparedStatement.setString(5, q.getCategory());
             preparedStatement.setInt(6, q.getDifficulty());
             preparedStatement.setInt(7, q.getPower());
-            preparedStatement.setInt(8, q.getSpeed());
+            preparedStatement.setInt(8, q.getId());
             preparedStatement.executeUpdate();
 
         } catch (Exception e) {
@@ -160,7 +165,7 @@ public class Record {
     public String deleteRecord(Table q) {
         try {
 
-            String query = "DELETE FROM quiz WHERE id=?;";
+            String query = "DELETE FROM questionTable WHERE id=?;";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1,  q.getId());
             preparedStatement.executeUpdate();
@@ -172,4 +177,22 @@ public class Record {
         loadResults();
         return "Record Deleted.";
     }
+
+    public String selectRecord(Table q) {
+        try {
+
+            String query = "SELECT FROM questionTable WHERE id=?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,  q.getId());
+            preparedStatement.executeUpdate();
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
+        loadResults();
+        return "Record Selected.";
+    }
+
+
 }
