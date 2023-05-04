@@ -37,14 +37,19 @@ public class Record {
 
     }
 
-    //Connection
 
+
+    //Finding JDBC connection to schema
     public boolean findConnection() {
         try {
 
+            //Getting the connection
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz", "root", "R3by$ound");
 
+            //Try-catch to catch for errors
             try {
+
+                //SQL statement to create table if one does not exist
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS `questionTable`(\n" +
                         "    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
                         "    `question` TEXT NOT NULL,\n" +
@@ -57,21 +62,31 @@ public class Record {
                         ");").executeUpdate();
 
             } catch (Exception e) {
+
+                //Printing error if there is one when creating table
                 e.printStackTrace();
             }
 
 
         } catch (Exception e) {
+
+            //Printing error if there is an error connecting
             System.out.println(e);
             return false;
         }
         return true;
     }
 
+    //Disconnecting from the database
     public boolean disconnect() {
+
+        //Try-catch to catch for errors
         try {
             connection.close();
+
         }catch(Exception e){
+
+            //Printing error back to user if there is one
             System.out.println(e);
             return false;
         }
@@ -79,6 +94,7 @@ public class Record {
     }
 
 
+    //Adding a record to questionTable
     public String addRecord(Table q) {
 
         String query = "INSERT INTO questionTable(question,answer1,answer2,answer3,category,difficulty,power) " + "VALUES(?,?,?,?,?,?,?)";
