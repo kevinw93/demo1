@@ -213,6 +213,13 @@ public class RecordController {
         return w;
     }
 
+    private Table getRecord(int recordNum) {
+
+        Table w = new Table();
+        int qID = records.getResults().get(recordNum).getId();
+        String gotRecord = records.selectRecord(w);
+    }
+
     //Method to go to first record in the table
     @FXML
     public void btnFirstClicked(ActionEvent event) {
