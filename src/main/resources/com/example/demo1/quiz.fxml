@@ -113,7 +113,12 @@
             <TextField fx:id="categoryTxt" layoutX="84.0" layoutY="18.0" prefHeight="25.0" prefWidth="143.0" />
             <Label fx:id="messageLbl" layoutX="30.0" layoutY="306.0" text="Label" />
             <Button fx:id="modeBtn" layoutX="36.0" layoutY="336.0" mnemonicParsing="false" onAction="#btnModeClicked" text="Mode: Edit " />
-            <Button fx:id="startBtn" layoutX="69.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnStartClicked" text="Start" />
+            <Button fx:id="startBtn" layoutX="38.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnStartClicked" prefHeight="25.0" prefWidth="91.0" text="Start" />
+            <Button fx:id="buzzBtn" layoutX="148.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnBuzzClicked" prefHeight="25.0" prefWidth="91.0" text="Buzz" />
+            <TextField fx:id="userAnswerTxt" layoutX="260.0" layoutY="266.0" prefHeight="25.0" prefWidth="248.0" text="User Answer" />
+            <Button fx:id="skipBtn" layoutX="522.0" layoutY="266.0" mnemonicParsing="false" onAction="#btnSkipClicked" prefHeight="25.0" prefWidth="77.0" text="Skip" />
+            <Label fx:id="scoreLbl" layoutX="493.0" layoutY="306.0" text="Score" />
+            <TextField fx:id="scoreTxt" layoutX="537.0" layoutY="302.0" prefHeight="25.0" prefWidth="57.0" />
       </children>
     </AnchorPane>
   </children>

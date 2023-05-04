@@ -1,3 +1,12 @@
+/*
+Kevin Wang
+3 May 2023
+AP Computer Science A
+2nd Period
+Master Project
+Main JavaFx Class
+ */
+
 package com.example.demo1;
 
 import javafx.application.Application;
@@ -22,28 +31,34 @@ public class MainFX extends Application {
         MainFX.primaryStage = stage;
     }
 
+    //Creating the stage
     @Override
     public void start(Stage arg0) throws Exception {
 
         try {
 
-            //Required to avoid null pointer error on launch
+            //Needed to prevent null pointer error on launch
             primaryStage = new Stage();
 
             //Setting the primary stage element
             setPrimaryStage(primaryStage);
 
-            //Loading the FXML
-            Parent root = FXMLLoader.load(getClass().getResource("test.fxml"));
+            //Loading FXML file
+            Parent root = FXMLLoader.load(getClass().getResource("quiz.fxml"));
 
             //Create the Scene in memory and assign our UI to that scene object
             Scene scene = new Scene(root);
 
-
+            //Getting stylesheet for FXML file
             scene.getStylesheets().add(String.valueOf(this.getClass().getResource("style.css")));
-            //Setting the title, and putting the scene on the primary stage - then showing the stage
+
+            //Setting title
             primaryStage.setTitle("Quiz-bowl Practice");
+
+            //Putting scene on primary stage
             primaryStage.setScene(scene);
+
+            //Showing stage
             primaryStage.show();
 
         }catch(Exception e){

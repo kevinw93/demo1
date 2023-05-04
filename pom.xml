@@ -38,6 +38,32 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.wslf</groupId>
+            <artifactId>LevenshteinDistance</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wslf</groupId>
+            <artifactId>LevenshteinDistance</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wslf</groupId>
+            <artifactId>LevenshteinDistance</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wslf</groupId>
+            <artifactId>LevenshteinDistance</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.wslf</groupId>
+            <artifactId>LevenshteinDistance</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

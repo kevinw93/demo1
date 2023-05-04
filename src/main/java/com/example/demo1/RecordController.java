@@ -1,3 +1,12 @@
+/*
+Kevin Wang
+3 May 2023
+AP Computer Science A
+2nd Period
+Master Project
+FXML Record Controller Class
+ */
+
 package com.example.demo1;
 
 import java.util.Optional;
@@ -14,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 public class RecordController {
 
 
@@ -79,8 +89,23 @@ public class RecordController {
     @FXML
     private Button startBtn;
     @FXML
+    private Button buzzBtn;
+    @FXML
+    private Button skipBtn;
+    @FXML
+    private TextField userAnswerTxt;
+    @FXML
+    private TextField scoreTxt;
+    @FXML
+    private Label scoreLbl;
+    @FXML
     private AnchorPane myAnchorPane;
+
+    //Initializing variables
     private String mode = "e";
+    private int useRecord = 0;
+    private int points = 0;
+    boolean continuePrint = false;
     Record records = new Record();
 
 
@@ -88,6 +113,7 @@ public class RecordController {
     @FXML
     public void btnConnectClicked(ActionEvent event) {
 
+        //If not connected, then connect to database
         if (connectBtn.getText().equals("Connect")) {
 
             currentRecord = 0;
@@ -96,8 +122,10 @@ public class RecordController {
 
                 connectBtn.setText("Disconnect");
                 enableControls();
+
+            //If unsuccessful, display failure message to user
             } else {
-                questionLbl.setText("no");
+                messageLbl.setText("Could not connect.");
             }
 
             //Loading first record in the table
@@ -114,14 +142,16 @@ public class RecordController {
                 disableControls();
                 connectBtn.setDisable(false);
                 connectBtn.setText("Connect");
+
+            //If unsuccessful, display failure message to user
             } else {
-                questionLbl.setText("yesD");
+                messageLbl.setText("Could not disconnect.");
             }
         }
 
     }
 
-    //Method to display record in Gui
+    //Method to display record in GUI
     private void displayRecord(int recordNum) {
 
         //Setting text fields to data from table
@@ -135,15 +165,18 @@ public class RecordController {
         powerTxt.setText(String.valueOf(records.getResults().get(recordNum).getPower()));
     }
 
+    //Method to insert a new record
     @FXML
     public void btnInsertClicked(ActionEvent event) {
+
         if (insertBtn.getText().equals("Insert")) {
 
+            //Updating GUI
             disableControls();
             insertBtn.setDisable(false);
             cancelBtn.setVisible(true);
 
-            // Clearing text fields
+            //Clearing text fields
             idTxt.setText("");
             questionTxt.setText("");
             answer1Txt.setText("");
@@ -153,15 +186,21 @@ public class RecordController {
             categoryTxt.setText("");
             difficultyTxt.setText("");
 
-
+            //Waiting for user to commit changes
             insertBtn.setText("COMMIT");
+
+        //Commit mode
         } else {
 
+            //Updating GUI
             cancelBtn.setVisible(false);
             insertBtn.setText("Insert");
+
+            //Pulling user input from GUI
             Table w = pullRecord();
-            String sus = records.addRecord(w);
-            System.out.println(sus);
+            updateMessage(records.addRecord(w));
+
+            //Updating GUI and displaying new record
             enableControls();
             currentRecord = records.getResults().size() - 1;
             displayRecord(currentRecord);
@@ -169,29 +208,56 @@ public class RecordController {
         }
     }
 
+    //Function to cancel inserting a new record
     @FXML
     public void btnCancelAddClicked(ActionEvent event) {
 
+        //Updating GUI
+        insertBtn.setText("Insert");
+        updateBtn.setDisable(false);
+        deleteBtn.setDisable(false);
+        updateMessage("Insert cancelled.");
+        displayRecord(currentRecord);
+        cancelBtn.setVisible(false);
+        enableControls();
     }
 
+    //Method to delete a function
     @FXML
     public void btnDeleteClicked(ActionEvent event) {
+
+        //Pulling current record from the GUI
         Table w = pullRecord();
+
+        //Deleting record from the table
         updateMessage(records.deleteRecord(w));
-        currentRecord = currentRecord - 1;
+
+        //Displaying adjacent record
+        if (currentRecord != 0) {
+            currentRecord = currentRecord - 1;
+        } else {
+            currentRecord = currentRecord + 1;
+        }
         displayRecord(currentRecord);
 
     }
 
+
+    //Method to update a record
     @FXML
     public void btnUpdateClicked(ActionEvent event) {
+
         updateMessage("Attempting Edit.");
+
+        //Pulling current record from the GUI
         Table w = pullRecord();
-        String sus = records.editRecord(w);
-        System.out.println(sus);
+        updateMessage(records.editRecord(w));
+
+        //Displaying changes
         displayRecord(currentRecord);
     }
 
+    //Utility function to update user on events in GUI
     private void updateMessage(String msg) {
         messageLbl.setText(msg);
 
@@ -202,6 +268,7 @@ public class RecordController {
 
         Table w = new Table();
 
+        //Getting text from GUI text boxes
         w.setQuestion(questionTxt.getText());
         w.setAnswer1(answer1Txt.getText());
         w.setAnswer2(answer2Txt.getText());
@@ -213,19 +280,6 @@ public class RecordController {
         return w;
     }
 
-    private void getRecord() {
-
-        int recordNum = (int) Math.random() * 10;
-        //Setting text fields to data from table
-        idTxt.setText(String.valueOf(records.getResults().get(recordNum).getId()));
-        questionTxt.setText(records.getResults().get(recordNum).getQuestion());
-        answer1Txt.setText(records.getResults().get(recordNum).getAnswer1());
-        answer2Txt.setText(records.getResults().get(recordNum).getAnswer2());
-        answer3Txt.setText(records.getResults().get(recordNum).getAnswer3());
-        categoryTxt.setText(records.getResults().get(recordNum).getCategory());
-        difficultyTxt.setText(String.valueOf(records.getResults().get(recordNum).getDifficulty()));
-        powerTxt.setText(String.valueOf(records.getResults().get(recordNum).getPower()));
-    }
 
     //Method to go to first record in the table
     @FXML
@@ -326,33 +380,237 @@ public class RecordController {
         disableControls();
         connectBtn.setDisable(false);
         startBtn.setVisible(false);
+        buzzBtn.setVisible(false);
+        userAnswerTxt.setVisible(false);
+        skipBtn.setVisible(false);
+        buzzBtn.setDisable(true);
+        userAnswerTxt.setDisable(true);
+        skipBtn.setDisable(true);
+        mode = "e";
     }
 
     //Method to switch between edit mode and play mode
     @FXML
     private void btnModeClicked(ActionEvent event) {
+
+        //Switching to edit mode
         if (mode.equals("p")) {
+
+            //Updating GUI
             mode = "e";
             modeBtn.setText("Mode: Edit");
             connectBtn.setVisible(true);
             insertBtn.setVisible(true);
             deleteBtn.setVisible(true);
             updateBtn.setVisible(true);
+            firstBtn.setVisible(true);
+            back3Btn.setVisible(true);
+            backBtn.setVisible(true);
+            forBtn.setVisible(true);
+            for3Btn.setVisible(true);
+            lastBtn.setVisible(true);
             startBtn.setVisible(false);
+            buzzBtn.setVisible(false);
+            userAnswerTxt.setVisible(false);
+            skipBtn.setVisible(false);
+
+        //Switching to play mode
         } else if (mode.equals("e")) {
+
+            //Updating GUI
             mode = "p";
             modeBtn.setText("Mode: Play");
             connectBtn.setVisible(false);
             insertBtn.setVisible(false);
             deleteBtn.setVisible(false);
             updateBtn.setVisible(false);
+            firstBtn.setVisible(false);
+            back3Btn.setVisible(false);
+            backBtn.setVisible(false);
+            forBtn.setVisible(false);
+            for3Btn.setVisible(false);
+            lastBtn.setVisible(false);
             startBtn.setVisible(true);
+            skipBtn.setVisible(true);
+            buzzBtn.setVisible(true);
+            userAnswerTxt.setVisible(true);
         }
     }
 
+    //Method to start a question
     @FXML
-    private void btnStartClicked(ActionEvent event) {
+    private void btnStartClicked(ActionEvent event) throws InterruptedException {
 
+        //Setting record to get to a random number
+        useRecord = (int) Math.random() * records.getResults().size()-1;
+
+        //Setting text fields to data from table
+        idTxt.setText(String.valueOf(records.getResults().get(useRecord).getId()));
+        String question = records.getResults().get(useRecord).getQuestion();
+        String answer1 = records.getResults().get(useRecord).getAnswer1();
+        String answer2 = records.getResults().get(useRecord).getAnswer2();
+        String answer3 = records.getResults().get(useRecord).getAnswer3();
+        categoryTxt.setText(records.getResults().get(useRecord).getCategory());
+        difficultyTxt.setText(String.valueOf(records.getResults().get(useRecord).getDifficulty()));
+        powerTxt.setText(String.valueOf(records.getResults().get(useRecord).getPower()));
+
+        //Updating GUI
+        buzzBtn.setDisable(false);
+        skipBtn.setDisable(false);
+        userAnswerTxt.setDisable(false);
+        startBtn.setDisable(true);
+
+        int i = 0;
+
+        //Splitting question into array split by spaces
+        String[] splitQuestion = question.split(" ");
+
+        //Getting length of array to use as a counter
+        int counter = splitQuestion.length;
+        continuePrint = true;
+
+        //Keep printing before question ends
+        while(i < counter && continuePrint == true) {
+
+            //Waiting 0.15 seconds between printing each word
+            Thread.sleep(150);
+            questionTxt.setText(questionTxt.getText() + " " +  splitQuestion[i]);
+            counter--;
+
+            //If at the end of the question
+            if (i == splitQuestion.length - 1) {
+
+                //Update GUI
+                startBtn.setDisable(false);
+                skipBtn.setDisable(true);
+
+                //Wait 3 seconds before disallowing the user from buzzing in
+                Thread.sleep(300);
+                questionTxt.setText(question);
+                answer1Txt.setText(answer1);
+                answer2Txt.setText(answer2);
+                answer3Txt.setText(answer3);
+
+                buzzBtn.setDisable(true);
+                userAnswerTxt.setDisable(true);
+            }
+
+            //Iterating through the question
+            i++;
+        }
+    }
+
+    //Function for when user buzzes in with an answer
+    @FXML
+    private void buzzBtnClicked(ActionEvent event) throws InterruptedException {
+
+        //Getting user-inputted answer and answers from database
+        String userAnswer = userAnswerTxt.getText();
+        userAnswer.toLowerCase();
+        String answer1 = records.getResults().get(useRecord).getAnswer1();
+        String answer2 = records.getResults().get(useRecord).getAnswer2();
+        String answer3 = records.getResults().get(useRecord).getAnswer3();
+
+        //Using external distance to find how similar the user answer is to given answers
+        //If distance is small enough, the user has entered a correct answer
+        double distance1 = Levenshtein.findSimilarity(userAnswer, answer1);
+        double distance2 = Levenshtein.findSimilarity(userAnswer, answer2);
+        double distance3 = Levenshtein.findSimilarity(userAnswer, answer3);
+        userAnswerTxt.setText("");
+
+        //If distance is small enough, user entered a correct answer
+        if (distance1 < answer1.length() / 4 + 1 || distance2 < answer1.length() / 4 + 1 || distance3 < answer1.length() / 4 + 1) {
+            messageLbl.setText("Correct!");
+            Thread.sleep(50);
+            end();
+            points = points + 10;
+
+        //If distance is too large, then answer was incorrect
+        } else {
+            continuePrint = false;
+            messageLbl.setText("Incorrect.");
+            Thread.sleep(50);
+            continuePrint = true;
+            points = points - 5;
+
+        }
+
+        //Updating point value to the user
+        scoreTxt.setText(String.valueOf(points));
+
+    }
+
+    //Method to end a question early
+    private void end() {
+
+        //Getting question and answer from table
+        String question = records.getResults().get(useRecord).getQuestion();
+        String answer1 = records.getResults().get(useRecord).getAnswer1();
+        String answer2 = records.getResults().get(useRecord).getAnswer2();
+        String answer3 = records.getResults().get(useRecord).getAnswer3();
+
+        //Stopping the print
+        continuePrint = false;
+
+        //Displaying answers
+        questionTxt.setText(question);
+        answer1Txt.setText(answer1);
+        answer2Txt.setText(answer2);
+        answer3Txt.setText(answer3);
+
+        //Updating GUI
+        buzzBtn.setDisable(true);
+        startBtn.setDisable(false);
+        skipBtn.setDisable(true);
+
+    }
+
+    //Function to skip a question
+    @FXML
+    private void skipBtnClicked(ActionEvent event) {
+        end();
+    }
+
+    //Function to connect to database from menu
+    @FXML
+    public void mConnectClicked(ActionEvent event) {
+        btnConnectClicked(event);
+    }
+
+    //Function to disconnect from database from menu
+    @FXML
+    public void mDisconnectClicked(ActionEvent event) {
+        btnConnectClicked(event);
+    }
+
+    //Function to insert new record from menu
+    @FXML
+    public void mInsertClicked(ActionEvent event) {
+        btnInsertClicked(event);
+    }
+
+    //Function to update record from menu
+    @FXML
+    public void mUpdateClicked(ActionEvent event) {
+        btnUpdateClicked(event);
+    }
+
+    //Function to delete record from menu
+    @FXML
+    public void mDeleteClicked(ActionEvent event) {
+        btnDeleteClicked(event);
+    }
+
+    //Function to show about panel from menu
+    @FXML
+    public void mAboutClicked(ActionEvent event) {
+
+        //Creating new alert and displaying it
+        Alert aboutAlert = new Alert(Alert.AlertType.INFORMATION);
+        aboutAlert.setTitle("Quiz-Bowl DB About");
+        aboutAlert.setHeaderText("Quiz-Bowl Program Information");
+        aboutAlert.setContentText("This program can be used to help you practice for academic/quiz bowl tournaments.");
+        aboutAlert.showAndWait();
     }
 
 }
