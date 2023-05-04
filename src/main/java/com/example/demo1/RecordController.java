@@ -213,11 +213,18 @@ public class RecordController {
         return w;
     }
 
-    private Table getRecord(int recordNum) {
+    private void getRecord() {
 
-        Table w = new Table();
-        int qID = records.getResults().get(recordNum).getId();
-        String gotRecord = records.selectRecord(w);
+        int recordNum = (int) Math.random() * 10;
+        //Setting text fields to data from table
+        idTxt.setText(String.valueOf(records.getResults().get(recordNum).getId()));
+        questionTxt.setText(records.getResults().get(recordNum).getQuestion());
+        answer1Txt.setText(records.getResults().get(recordNum).getAnswer1());
+        answer2Txt.setText(records.getResults().get(recordNum).getAnswer2());
+        answer3Txt.setText(records.getResults().get(recordNum).getAnswer3());
+        categoryTxt.setText(records.getResults().get(recordNum).getCategory());
+        difficultyTxt.setText(String.valueOf(records.getResults().get(recordNum).getDifficulty()));
+        powerTxt.setText(String.valueOf(records.getResults().get(recordNum).getPower()));
     }
 
     //Method to go to first record in the table
